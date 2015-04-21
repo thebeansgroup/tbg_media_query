@@ -7,7 +7,8 @@ ResizeMonitor = require('./resize');
 
 MediaQuery = {
   propTypes: {
-    breakpoints: React.PropTypes.array.isRequired
+    breakpoints: React.PropTypes.array.isRequired,
+    component: React.PropTypes.string
   },
   getInitialState: function() {
     return {
@@ -16,6 +17,7 @@ MediaQuery = {
   },
   getDefaultProps: function() {
     return {
+      component: 'div',
       breakpoints: []
     };
   },
@@ -44,6 +46,7 @@ MediaQuery = {
     if (!this.hasCurrentBreakpoint()) {
       return null;
     }
+    return React.createElement(this.props.component, this.props, this.props.children);
   }
 };
 

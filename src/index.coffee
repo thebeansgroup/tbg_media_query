@@ -17,6 +17,7 @@ MediaQuery =
 
   propTypes:
     breakpoints: React.PropTypes.array.isRequired
+    component: React.PropTypes.string
 
 
   # --------------------------------------------
@@ -27,6 +28,7 @@ MediaQuery =
     breakpoint: ''
 
   getDefaultProps: ->
+    component: 'div'
     breakpoints: []
 
   # One of the breakpoints is at the current size
@@ -74,6 +76,7 @@ MediaQuery =
   render: ->
     console.log @state.breakpoint
     return null unless @hasCurrentBreakpoint()
+    React.createElement(@props.component, @props, @props.children)
 
 
 module.exports =  React.createClass(MediaQuery)
