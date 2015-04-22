@@ -21,11 +21,15 @@ ResizeMonitor = assign({}, EventEmitter.prototype, {
     if (this.resizeTimer) {
       clearTimeout(this.resizeTimer);
     }
-    return this.resizeTimer = setTimeout(ResizeMonitor.emitChange, 100);
+    return this.resizeTimer = setTimeout(ResizeMonitor.emitChange.bind(ResizeMonitor), 100);
   },
   resizeTimer: null
 });
 
-window.addEventListener("resize", ResizeMonitor.resize);
+if (typeof window !== "undefined" && window !== null) {
+  if (typeof window.addEventListener === "function") {
+    window.addEventListener("resize", ResizeMonitor.resize);
+  }
+}
 
 module.exports = ResizeMonitor;

@@ -3,6 +3,7 @@ React          = require('react/addons')
 
 # Helpers
 ResizeMonitor  = require('./resize')
+canUseDOM      = require('react/lib/ExecutionEnvironment').canUseDOM
 
 
 # Media Query
@@ -25,10 +26,12 @@ MediaQuery =
   # --------------------------------------------
 
   getInitialState: ->
-    breakpoint: ''
+    breakpoint: null
 
   getDefaultProps: ->
     component: 'div'
+    componentProps: {}
+    defaultBreakpoint: 'mother'
     breakpoints: []
 
   # One of the breakpoints is at the current size
@@ -36,12 +39,15 @@ MediaQuery =
   # @return [Boolean] size is present
   #
   hasCurrentBreakpoint: ->
-    @props.breakpoints.indexOf(@state.breakpoint) isnt -1
+    @props.breakpoints.indexOf(@state.breakpoint || @props.defaultBreakpoint) isnt -1
 
 
   # --------------------------------------------
   # Lifecycle Methods
   # --------------------------------------------
+
+  componentWillMount: ->
+    @_onChange() if canUseDOM
 
   componentDidMount: ->
     ResizeMonitor.addChangeListener(@_onChange)
@@ -55,8 +61,8 @@ MediaQuery =
   # -------------------------------------------- 
 
   _getBreakpointFromBody: ->
-    return '' unless not window.getComputedStyle?
-    window.getComputedStyle(document.body,':after').getPropertyValue('content').replace('-','') || ''
+    return '' unless window.getComputedStyle?
+    window.getComputedStyle(document.body,':after').getPropertyValue('content').replace('-','').replace(/'/g, '') || ''
 
 
   # --------------------------------------------
@@ -74,9 +80,8 @@ MediaQuery =
   # --------------------------------------------
 
   render: ->
-    console.log @state.breakpoint
     return null unless @hasCurrentBreakpoint()
-    React.createElement(@props.component, @props, @props.children)
+    React.createElement(@props.component, @props.componentProps, @props.children)
 
 
 module.exports =  React.createClass(MediaQuery)

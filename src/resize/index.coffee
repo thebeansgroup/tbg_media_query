@@ -33,11 +33,11 @@ ResizeMonitor = assign {}, EventEmitter.prototype,
   #
   resize: ->
     if @resizeTimer then clearTimeout @resizeTimer
-    @resizeTimer = setTimeout ResizeMonitor.emitChange, 100
+    @resizeTimer = setTimeout ResizeMonitor.emitChange.bind(ResizeMonitor), 100
  
   # Timeout store
   #
   resizeTimer: null
 
-window.addEventListener("resize", ResizeMonitor.resize)
+window?.addEventListener?("resize", ResizeMonitor.resize)
 module.exports = ResizeMonitor
