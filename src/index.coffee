@@ -62,7 +62,7 @@ MediaQuery =
 
   _getBreakpointFromBody: ->
     return '' unless window.getComputedStyle?
-    window.getComputedStyle(document.body,':after').getPropertyValue('content').replace('-','').replace(/'/g, '') || ''
+    window.getComputedStyle(document.body,':after').getPropertyValue('content').replace('-','').replace(/'/g, '').replace(/"/g, '') || ''
 
 
   # --------------------------------------------

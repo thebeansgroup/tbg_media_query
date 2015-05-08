@@ -43,7 +43,7 @@ MediaQuery = {
     if (window.getComputedStyle == null) {
       return '';
     }
-    return window.getComputedStyle(document.body, ':after').getPropertyValue('content').replace('-', '').replace(/'/g, '') || '';
+    return window.getComputedStyle(document.body, ':after').getPropertyValue('content').replace('-', '').replace(/'/g, '').replace(/"/g, '') || '';
   },
   _onChange: function() {
     return this.setState({
