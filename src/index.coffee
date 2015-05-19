@@ -17,7 +17,7 @@ MediaQuery =
   # --------------------------------------------
 
   propTypes:
-    breakpoints: React.PropTypes.array.isRequired
+    breakpoints: React.PropTypes.object.isRequired
     component: React.PropTypes.string
 
 
@@ -32,14 +32,14 @@ MediaQuery =
     component: 'div'
     componentProps: {}
     defaultBreakpoint: 'mother'
-    breakpoints: []
+    breakpoints: {}
 
   # One of the breakpoints is at the current size
   #
   # @return [Boolean] size is present
   #
   hasCurrentBreakpoint: ->
-    @props.breakpoints.indexOf(@state.breakpoint || @props.defaultBreakpoint) isnt -1
+    @_getBreakpointRenderMethod()?
 
 
   # --------------------------------------------
@@ -64,6 +64,8 @@ MediaQuery =
     return '' unless window.getComputedStyle?
     window.getComputedStyle(document.body,':after').getPropertyValue('content').replace('-','').replace(/'/g, '').replace(/"/g, '') || ''
 
+  _getBreakpointRenderMethod: -> 
+    @props.breakpoints[@state.breakpoint || @props.defaultBreakpoint]
 
   # --------------------------------------------
   # Event handlers
@@ -81,7 +83,7 @@ MediaQuery =
 
   render: ->
     return null unless @hasCurrentBreakpoint()
-    React.createElement(@props.component, @props.componentProps, @props.children)
+    React.createElement(@props.component, @props.componentProps, @_getBreakpointRenderMethod())
 
 
 module.exports =  React.createClass(MediaQuery)

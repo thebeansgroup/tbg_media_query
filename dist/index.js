@@ -9,7 +9,7 @@ canUseDOM = require('react/lib/ExecutionEnvironment').canUseDOM;
 
 MediaQuery = {
   propTypes: {
-    breakpoints: React.PropTypes.array.isRequired,
+    breakpoints: React.PropTypes.object.isRequired,
     component: React.PropTypes.string
   },
   getInitialState: function() {
@@ -22,11 +22,11 @@ MediaQuery = {
       component: 'div',
       componentProps: {},
       defaultBreakpoint: 'mother',
-      breakpoints: []
+      breakpoints: {}
     };
   },
   hasCurrentBreakpoint: function() {
-    return this.props.breakpoints.indexOf(this.state.breakpoint || this.props.defaultBreakpoint) !== -1;
+    return this._getBreakpointRenderMethod() != null;
   },
   componentWillMount: function() {
     if (canUseDOM) {
@@ -45,6 +45,9 @@ MediaQuery = {
     }
     return window.getComputedStyle(document.body, ':after').getPropertyValue('content').replace('-', '').replace(/'/g, '').replace(/"/g, '') || '';
   },
+  _getBreakpointRenderMethod: function() {
+    return this.props.breakpoints[this.state.breakpoint || this.props.defaultBreakpoint];
+  },
   _onChange: function() {
     return this.setState({
       breakpoint: this._getBreakpointFromBody()
@@ -54,7 +57,7 @@ MediaQuery = {
     if (!this.hasCurrentBreakpoint()) {
       return null;
     }
-    return React.createElement(this.props.component, this.props.componentProps, this.props.children);
+    return React.createElement(this.props.component, this.props.componentProps, this._getBreakpointRenderMethod());
   }
 };
 

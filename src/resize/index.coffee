@@ -40,4 +40,5 @@ ResizeMonitor = assign {}, EventEmitter.prototype,
   resizeTimer: null
 
 window?.addEventListener?("resize", ResizeMonitor.resize)
+ResizeMonitor.setMaxListeners(0)
 module.exports = ResizeMonitor

@@ -32,4 +32,6 @@ if (typeof window !== "undefined" && window !== null) {
   }
 }
 
+ResizeMonitor.setMaxListeners(0);
+
 module.exports = ResizeMonitor;
