@@ -7,13 +7,27 @@
   
   ...
 
+  renderTextLarge: ->
+    DOM.p({}, 'Large Screen Text only'),
+
+  renderTextSmall: ->
+    DOM.p({}, 'Small Screen Text only'),
+
   render: ->
+    textSmall = this.renderTextSmall()
+    textLarge = this.renderTextLarge()
+
     DOM.div( null,
     [
       DOM.h1({}, 'The title'),
-      MediaQuery({breakpoints: ["brother", "mother"]}, [
-        DOM.p({}, 'Large Screen Text only'),
-      ])
+      MediaQuery({
+        breakpoints: {
+          baby:    textSmall
+          sister:  textSmall
+          brother: textLarge
+          mother:  textLarge
+        }
+      })
       
     ])
 ```
@@ -31,13 +45,23 @@ The component takes the following optional properties:
   ...
 
   render: ->
+    textSmall = this.renderTextSmall()
+    textLarge = this.renderTextLarge()
+
     DOM.div( null,
     [
       DOM.h1({}, 'The title'),
-      MediaQuery({breakpoints: ["baby", "sister"], defaultBreakpoint: "baby", component: 'aside', componentProps: {className: "sidebar"} }, [
-        DOM.p({}, 'Small text only'),
-      ])
-      
+      MediaQuery({
+        defaultBreakpoint: "baby"
+        component: 'aside'
+        componentProps: {className: "sidebar"} 
+        breakpoints: {
+          baby:    textSmall
+          sister:  textSmall
+          brother: textLarge
+          mother:  textLarge
+        }
+      })
     ])
 ```
 
