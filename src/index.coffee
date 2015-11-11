@@ -1,9 +1,10 @@
 # React Globals
-React          = require('react/addons')
+React          = require('react')
+Yaks           = require('yaks')
 
 # Helpers
 ResizeMonitor  = require('./resize')
-canUseDOM      = require('react/lib/ExecutionEnvironment').canUseDOM
+canUseDOM      = Yaks.UTILS.canUseDOM
 
 
 # Media Query
