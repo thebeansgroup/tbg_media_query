@@ -1,6 +1,6 @@
 {
   "name": "tbg_media_query",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Media Query Component for React.js",
   "main": "./dist/index.js",
   "scripts": {
