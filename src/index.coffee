@@ -11,7 +11,7 @@ canUseDOM      = Yaks.UTILS.canUseDOM
 #
 # @mixin
 #
-MediaQuery = 
+MediaQuery =
 
   # --------------------------------------------
   # Defaults
@@ -51,21 +51,23 @@ MediaQuery =
     @_onChange() if canUseDOM
 
   componentDidMount: ->
+    @componentMounted = true
     ResizeMonitor.addChangeListener(@_onChange)
 
   componentWillUnmount: ->
+    @componentMounted = false
     ResizeMonitor.removeChangeListener(@_onChange)
 
 
   # --------------------------------------------
   # Private methods
-  # -------------------------------------------- 
+  # --------------------------------------------
 
   _getBreakpointFromBody: ->
     return '' unless window.getComputedStyle?
     window.getComputedStyle(document.body,':after').getPropertyValue('content').replace('-','').replace(/'/g, '').replace(/"/g, '') || ''
 
-  _getBreakpointRenderMethod: -> 
+  _getBreakpointRenderMethod: ->
     @props.breakpoints[@state.breakpoint || @props.defaultBreakpoint]
 
   # --------------------------------------------
@@ -74,8 +76,9 @@ MediaQuery =
 
   # Handle click from Clicker
   #
-  _onChange: ()->
-    @setState breakpoint: @_getBreakpointFromBody()
+  _onChange: () ->
+    if (@componentMounted)
+      @setState breakpoint: @_getBreakpointFromBody()
 
 
   # --------------------------------------------

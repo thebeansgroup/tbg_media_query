@@ -36,9 +36,11 @@ MediaQuery = {
     }
   },
   componentDidMount: function() {
+    this.componentMounted = true;
     return ResizeMonitor.addChangeListener(this._onChange);
   },
   componentWillUnmount: function() {
+    this.componentMounted = false;
     return ResizeMonitor.removeChangeListener(this._onChange);
   },
   _getBreakpointFromBody: function() {
@@ -51,9 +53,11 @@ MediaQuery = {
     return this.props.breakpoints[this.state.breakpoint || this.props.defaultBreakpoint];
   },
   _onChange: function() {
-    return this.setState({
-      breakpoint: this._getBreakpointFromBody()
-    });
+    if (this.componentMounted) {
+      return this.setState({
+        breakpoint: this._getBreakpointFromBody()
+      });
+    }
   },
   render: function() {
     if (!this.hasCurrentBreakpoint()) {

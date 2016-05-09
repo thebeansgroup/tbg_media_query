@@ -27,7 +27,7 @@ ResizeMonitor = assign {}, EventEmitter.prototype,
 
   # --------------------------------------------
   # Private methods
-  # -------------------------------------------- 
+  # --------------------------------------------
 
   # Set a timeout to call resizeEvent after 100ms, clearing existing timeout if one set
   #
