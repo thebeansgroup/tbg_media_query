@@ -68,7 +68,7 @@ MediaQuery =
     window.getComputedStyle(document.body,':after').getPropertyValue('content').replace('-','').replace(/'/g, '').replace(/"/g, '') || ''
 
   _getBreakpointRenderMethod: ->
-    @props.breakpoints[@state.breakpoint || @props.defaultBreakpoint]
+    @props.breakpoints[@_getBreakpointFromBody()]
 
   # --------------------------------------------
   # Event handlers
@@ -77,7 +77,7 @@ MediaQuery =
   # Handle click from Clicker
   #
   _onChange: () ->
-    if (@componentMounted)
+    if @componentMounted
       @setState breakpoint: @_getBreakpointFromBody()
 
 

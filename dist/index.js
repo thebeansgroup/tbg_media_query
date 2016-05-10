@@ -50,7 +50,7 @@ MediaQuery = {
     return window.getComputedStyle(document.body, ':after').getPropertyValue('content').replace('-', '').replace(/'/g, '').replace(/"/g, '') || '';
   },
   _getBreakpointRenderMethod: function() {
-    return this.props.breakpoints[this.state.breakpoint || this.props.defaultBreakpoint];
+    return this.props.breakpoints[this._getBreakpointFromBody()];
   },
   _onChange: function() {
     if (this.componentMounted) {

@@ -22,6 +22,7 @@ ResizeMonitor = assign {}, EventEmitter.prototype,
     @on(CHANGE_EVENT, callback)
 
   removeChangeListener: (callback) ->
+    if @resizeTimer then clearTimeout @resizeTimer
     @removeListener(CHANGE_EVENT, callback)
 
 

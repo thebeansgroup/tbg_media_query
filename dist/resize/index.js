@@ -15,6 +15,9 @@ ResizeMonitor = assign({}, EventEmitter.prototype, {
     return this.on(CHANGE_EVENT, callback);
   },
   removeChangeListener: function(callback) {
+    if (this.resizeTimer) {
+      clearTimeout(this.resizeTimer);
+    }
     return this.removeListener(CHANGE_EVENT, callback);
   },
   resize: function() {
