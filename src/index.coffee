@@ -11,29 +11,20 @@ canUseDOM      = Yaks.UTILS.canUseDOM
 #
 # @mixin
 #
-MediaQuery =
+class MediaQuery extends React.Component
 
-  # --------------------------------------------
-  # Defaults
-  # --------------------------------------------
-
-  propTypes:
-    breakpoints: React.PropTypes.object.isRequired
-    component: React.PropTypes.string
-
-
-  # --------------------------------------------
-  # Getters & Checkers - get/has/can/is
-  # --------------------------------------------
-
-  getInitialState: ->
-    breakpoint: null
-
-  getDefaultProps: ->
+  @displayName = 'MediaQuery'
+  @defaultProps = {
     component: 'div'
     componentProps: {}
     defaultBreakpoint: 'mother'
     breakpoints: {}
+  }
+
+  constructor: (props) ->
+    super props
+    @state = breakpoint: null
+    @componentMounted = null
 
   # One of the breakpoints is at the current size
   #
@@ -48,11 +39,11 @@ MediaQuery =
   # --------------------------------------------
 
   componentWillMount: ->
-    @_onChange() if canUseDOM
 
   componentDidMount: ->
     @componentMounted = true
-    ResizeMonitor.addChangeListener(@_onChange)
+    @_onChange() if canUseDOM
+    ResizeMonitor.addChangeListener(@_onChange.bind @)
 
   componentWillUnmount: ->
     @componentMounted = false
@@ -68,7 +59,7 @@ MediaQuery =
     window.getComputedStyle(document.body,':after').getPropertyValue('content').replace('-','').replace(/'/g, '').replace(/"/g, '') || ''
 
   _getBreakpointRenderMethod: ->
-    @props.breakpoints[@_getBreakpointFromBody()]
+    @props.breakpoints[@state.breakpoint || @props.defaultBreakpoint]
 
   # --------------------------------------------
   # Event handlers
@@ -90,4 +81,4 @@ MediaQuery =
     React.createElement(@props.component, @props.componentProps, @_getBreakpointRenderMethod())
 
 
-module.exports =  React.createClass(MediaQuery)
+module.exports = MediaQuery
