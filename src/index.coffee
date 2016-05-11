@@ -11,29 +11,19 @@ canUseDOM      = Yaks.UTILS.canUseDOM
 #
 # @mixin
 #
-MediaQuery = 
+class MediaQuery extends React.Component
 
-  # --------------------------------------------
-  # Defaults
-  # --------------------------------------------
-
-  propTypes:
-    breakpoints: React.PropTypes.object.isRequired
-    component: React.PropTypes.string
-
-
-  # --------------------------------------------
-  # Getters & Checkers - get/has/can/is
-  # --------------------------------------------
-
-  getInitialState: ->
-    breakpoint: null
-
-  getDefaultProps: ->
+  @displayName = 'MediaQuery'
+  @defaultProps = {
     component: 'div'
     componentProps: {}
     defaultBreakpoint: 'mother'
     breakpoints: {}
+  }
+
+  constructor: (props) ->
+    super props
+    @state = breakpoint: null
 
   # One of the breakpoints is at the current size
   #
@@ -47,25 +37,25 @@ MediaQuery =
   # Lifecycle Methods
   # --------------------------------------------
 
-  componentWillMount: ->
-    @_onChange() if canUseDOM
-
   componentDidMount: ->
-    ResizeMonitor.addChangeListener(@_onChange)
+    @componentMounted = true
+    @_onChange() if canUseDOM
+    ResizeMonitor.addChangeListener(@_onChange.bind @)
 
   componentWillUnmount: ->
+    @componentMounted = false
     ResizeMonitor.removeChangeListener(@_onChange)
 
 
   # --------------------------------------------
   # Private methods
-  # -------------------------------------------- 
+  # --------------------------------------------
 
   _getBreakpointFromBody: ->
     return '' unless window.getComputedStyle?
     window.getComputedStyle(document.body,':after').getPropertyValue('content').replace('-','').replace(/'/g, '').replace(/"/g, '') || ''
 
-  _getBreakpointRenderMethod: -> 
+  _getBreakpointRenderMethod: ->
     @props.breakpoints[@state.breakpoint || @props.defaultBreakpoint]
 
   # --------------------------------------------
@@ -74,8 +64,9 @@ MediaQuery =
 
   # Handle click from Clicker
   #
-  _onChange: ()->
-    @setState breakpoint: @_getBreakpointFromBody()
+  _onChange: () ->
+    if @componentMounted
+      @setState breakpoint: @_getBreakpointFromBody()
 
 
   # --------------------------------------------
@@ -87,4 +78,4 @@ MediaQuery =
     React.createElement(@props.component, @props.componentProps, @_getBreakpointRenderMethod())
 
 
-module.exports =  React.createClass(MediaQuery)
+module.exports = MediaQuery
