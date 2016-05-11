@@ -24,7 +24,6 @@ class MediaQuery extends React.Component
   constructor: (props) ->
     super props
     @state = breakpoint: null
-    @componentMounted = null
 
   # One of the breakpoints is at the current size
   #
@@ -37,8 +36,6 @@ class MediaQuery extends React.Component
   # --------------------------------------------
   # Lifecycle Methods
   # --------------------------------------------
-
-  componentWillMount: ->
 
   componentDidMount: ->
     @componentMounted = true

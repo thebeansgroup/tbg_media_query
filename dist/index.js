@@ -28,14 +28,11 @@ MediaQuery = (function(superClass) {
     this.state = {
       breakpoint: null
     };
-    this.componentMounted = null;
   }
 
   MediaQuery.prototype.hasCurrentBreakpoint = function() {
     return this._getBreakpointRenderMethod() != null;
   };
-
-  MediaQuery.prototype.componentWillMount = function() {};
 
   MediaQuery.prototype.componentDidMount = function() {
     this.componentMounted = true;
